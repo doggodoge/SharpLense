@@ -7,27 +7,11 @@ namespace Chip8WorkingCopy
     {
         private static GraphicsDevice _graphicsDevice;
         
-        static void Main(string[] args)
+        static void Main()
         {
-            // Setup windowing system for .NET Core to
-            // display graphics from emulator
+            var disassembler = new Disassembler();
             
-            var windowCi = new WindowCreateInfo
-            {
-                X = 100,
-                Y = 100,
-                WindowWidth = 960,
-                WindowHeight = 540,
-                WindowTitle = "Chip8 Emulator"
-            };
-            var window = VeldridStartup.CreateWindow(ref windowCi);
-
-            _graphicsDevice = VeldridStartup.CreateGraphicsDevice(window);
-
-            while (window.Exists)
-            {
-                window.PumpEvents();
-            }
+            disassembler.Disassemble8080("./INVADERS");
         }
     }
 }
