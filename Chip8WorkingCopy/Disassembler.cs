@@ -10,8 +10,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using Vulkan;
 
 namespace Chip8WorkingCopy
 {
@@ -193,6 +191,70 @@ namespace Chip8WorkingCopy
                         break;
                     case 0x1f:
                         Console.WriteLine("RAR");
+                        span = 1;
+                        break;
+                    case 0x20:
+                        Console.WriteLine("RIM");
+                        span = 1;
+                        break;
+                    case 0x21:
+                        Console.WriteLine($"LXI\tH, #${opcode3:X}, #${opcode2:X}");
+                        span = 3;
+                        break;
+                    case 0x22:
+                        Console.WriteLine($"SHLD\t0x{opcode2:X}");
+                        span = 3;
+                        break;
+                    case 0x23:
+                        Console.WriteLine("INX\tH");
+                        span = 1;
+                        break;
+                    case 0x24:
+                        Console.WriteLine("INR\tH");
+                        span = 1;
+                        break;
+                    case 0x25:
+                        Console.WriteLine("DCR\tH");
+                        span = 1;
+                        break;
+                    case 0x26:
+                        Console.WriteLine($"MVI\tH, #${opcode2:H}");
+                        span = 2;
+                        break;
+                    case 0x27:
+                        Console.WriteLine("DAA");
+                        span = 1;
+                        break;
+                    case 0x28:
+                        Console.WriteLine("-");
+                        span = 1;
+                        break;
+                    case 0x29:
+                        Console.WriteLine("DAD\tH");
+                        span = 1;
+                        break;
+                    case 0x2a:
+                        Console.WriteLine($"LHLD\t0x{opcode2:X}");
+                        span = 3;
+                        break;
+                    case 0x2b:
+                        Console.WriteLine("DCX\tH");
+                        span = 1;
+                        break;
+                    case 0x2c:
+                        Console.WriteLine("INR\tL");
+                        span = 1;
+                        break;
+                    case 0x2d:
+                        Console.WriteLine("DCR\tL");
+                        span = 1;
+                        break;
+                    case 0x2e:
+                        Console.WriteLine($"MVI\tL, #${opcode2:X}");
+                        span = 2;
+                        break;
+                    case 0x2f:
+                        Console.WriteLine($"CMA");
                         span = 1;
                         break;
                     default:
