@@ -10,23 +10,13 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Xml;
 
 namespace Chip8WorkingCopy
 {
     public class Disassembler
     {
-        // 1. Read code from the buffer
-
-        // 2. Go to beginning of buffer
-
-        // 3. Use the byte to determine the opcode
-
-        // 4. Print name of opcode using bytes after the opcode as data, if applicable
-
-        // 5. Advance the pointer the number of reads used by that instruction (1, 2 or 3)
-
-        // 6. If not the end of buffer, go to step 3
-
+    
         public void Disassemble8080(string fileToRead)
         {
             var byteArray = File
@@ -218,7 +208,7 @@ namespace Chip8WorkingCopy
                         span = 1;
                         break;
                     case 0x26:
-                        Console.WriteLine($"MVI\tH, #${opcode2:H}");
+                        Console.WriteLine($"MVI\tH, #${opcode2:X}");
                         span = 2;
                         break;
                     case 0x27:
@@ -255,6 +245,326 @@ namespace Chip8WorkingCopy
                         break;
                     case 0x2f:
                         Console.WriteLine($"CMA");
+                        span = 1;
+                        break;
+                    case 0x30:
+                        Console.WriteLine("SIM");
+                        span = 1;
+                        break;
+                    case 0x31:
+                        Console.WriteLine($"LXI\tSP, #${opcode3:X}, #${opcode2:X}");
+                        span = 3;
+                        break;
+                    case 0x32:
+                        Console.WriteLine($"STA\t0x{opcode2:X}");
+                        span = 3;
+                        break;
+                    case 0x33:
+                        Console.WriteLine("INX\tSP");
+                        span = 1;
+                        break;
+                    case 0x34:
+                        Console.WriteLine("INR\tM");
+                        span = 1;
+                        break;
+                    case 0x35:
+                        Console.WriteLine("DCR\tM");
+                        span = 1;
+                        break;
+                    case 0x36:
+                        Console.WriteLine($"MVI\tM, #${opcode2:X}");
+                        span = 2;
+                        break;
+                    case 0x37:
+                        Console.WriteLine("STC");
+                        span = 1;
+                        break;
+                    case 0x38:
+                        Console.WriteLine("-");
+                        span = 1;
+                        break;
+                    case 0x39:
+                        Console.WriteLine("DAD\tSP");
+                        span = 1;
+                        break;
+                    case 0x3a:
+                        Console.WriteLine($"LDA\t0x{opcode2:X}");
+                        span = 3;
+                        break;
+                    case 0x3b:
+                        Console.WriteLine("DCX\tSP");
+                        span = 1;
+                        break;
+                    case 0x3c:
+                        Console.WriteLine("INR\tA");
+                        span = 1;
+                        break;
+                    case 0x3d:
+                        Console.WriteLine("DCR\tA");
+                        span = 1;
+                        break;
+                    case 0x3e:
+                        Console.WriteLine($"MVI\tA, #${opcode2:X}");
+                        span = 3;
+                        break;
+                    case 0x3f:
+                        Console.WriteLine("CMC");
+                        span = 1;
+                        break;
+                    case 0x40:
+                        Console.WriteLine("MOV\tB, B");
+                        span = 1;
+                        break;
+                    case 0x41:
+                        Console.WriteLine("MOV\tB, C");
+                        span = 1;
+                        break;
+                    case 0x42:
+                        Console.WriteLine("MOV\tB, D");
+                        span = 1;
+                        break;
+                    case 0x43:
+                        Console.WriteLine("MOV\tB, E");
+                        span = 1;
+                        break;
+                    case 0x44:
+                        Console.WriteLine("MOV\tB, H");
+                        span = 1;
+                        break;
+                    case 0x45:
+                        Console.WriteLine("MOB\tB, L");
+                        span = 1;
+                        break;
+                    case 0x46:
+                        Console.WriteLine("MOV\tB, M");
+                        span = 1;
+                        break;
+                    case 0x47:
+                        Console.WriteLine("MOV\tB, A");
+                        span = 1;
+                        break;
+                    case 0x48:
+                        Console.WriteLine("MOV\tC, B");
+                        span = 1;
+                        break;
+                    case 0x49:
+                        Console.WriteLine("MOV\tC, C");
+                        span = 1;
+                        break;
+                    case 0x4a:
+                        Console.WriteLine("MOV\tC, D");
+                        span = 1;
+                        break;
+                    case 0x4b:
+                        Console.WriteLine("MOV\tC, E");
+                        span = 1;
+                        break;
+                    case 0x4c:
+                        Console.WriteLine("MOV\tC, H");
+                        span = 1;
+                        break;
+                    case 0x4d:
+                        Console.WriteLine("MOV\tC, L");
+                        span = 1;
+                        break;
+                    case 0x4e:
+                        Console.WriteLine("MOV\tC, M");
+                        span = 1;
+                        break;
+                    case 0x4f:
+                        Console.WriteLine("MOV\tC, A");
+                        span = 1;
+                        break;
+                    case 0x50:
+                        Console.WriteLine("MOV\tD, B");
+                        span = 1;
+                        break;
+                    case 0x51:
+                        Console.WriteLine("MOV\tD, C");
+                        span = 1;
+                        break;
+                    case 0x52:
+                        Console.WriteLine("MOV\tD, D");
+                        span = 1;
+                        break;
+                    case 0x53:
+                        Console.WriteLine("MOV\tD, E");
+                        span = 1;
+                        break;
+                    case 0x54:
+                        Console.WriteLine("MOV\tD, H");
+                        span = 1;
+                        break;
+                    case 0x55:
+                        Console.WriteLine("MOV\tD, L");
+                        span = 1;
+                        break;
+                    case 0x56:
+                        Console.WriteLine("MOV\tD, M");
+                        span = 1;
+                        break;
+                    case 0x57:
+                        Console.WriteLine("MOV\tD, A");
+                        span = 1;
+                        break;
+                    case 0x58:
+                        Console.WriteLine("MOV\tE, B");
+                        span = 1;
+                        break;
+                    case 0x59:
+                        Console.WriteLine("MOV\tE, C");
+                        span = 1;
+                        break;
+                    case 0x5a:
+                        Console.WriteLine("MOV\tE, D");
+                        span = 1;
+                        break;
+                    case 0x5b:
+                        Console.WriteLine("MOV\tE, E");
+                        span = 1;
+                        break;
+                    case 0x5c:
+                        Console.WriteLine("MOV\tE, H");
+                        span = 1;
+                        break;
+                    case 0x5d:
+                        Console.WriteLine("MOV\tE, L");
+                        span = 1;
+                        break;
+                    case 0x5e:
+                        Console.WriteLine("MOV\tE, M");
+                        span = 1;
+                        break;
+                    case 0x5f:
+                        Console.WriteLine("MOV\tE, A");
+                        span = 1;
+                        break;
+                    case 0x60:
+                        Console.WriteLine("MOV\tH, B");
+                        span = 1;
+                        break;
+                    case 0x61:
+                        Console.WriteLine("MOV\tH, C");
+                        span = 1;
+                        break;
+                    case 0x62:
+                        Console.WriteLine("MOV\tH, D");
+                        span = 1;
+                        break;
+                    case 0x63:
+                        Console.WriteLine("MOV\tH, E");
+                        span = 1;
+                        break;
+                    case 0x64:
+                        Console.WriteLine("MOV\tH, H");
+                        span = 1;
+                        break;
+                    case 0x65:
+                        Console.WriteLine("MOV\tH, L");
+                        span = 1;
+                        break;
+                    case 0x66:
+                        Console.WriteLine("MOV\tH, M");
+                        span = 1;
+                        break;
+                    case 0x67:
+                        Console.WriteLine("MOV\tH, A");
+                        span = 1;
+                        break;
+                    case 0x68:
+                        Console.WriteLine("MOV\tL, B");
+                        span = 1;
+                        break;
+                    case 0x69:
+                        Console.WriteLine("MOV\tL, C");
+                        span = 1;
+                        break;
+                    case 0x6a:
+                        Console.WriteLine("MOV\tL, D");
+                        span = 1;
+                        break;
+                    case 0x6b:
+                        Console.WriteLine("MOV\tL, E");
+                        span = 1;
+                        break;
+                    case 0x6c:
+                        Console.WriteLine("MOV\tL, H");
+                        span = 1;
+                        break;
+                    case 0x6d:
+                        Console.WriteLine("MOV\tL, L");
+                        span = 1;
+                        break;
+                    case 0x6e:
+                        Console.WriteLine("MOV\tL, M");
+                        span = 1;
+                        break;
+                    case 0x6f:
+                        Console.WriteLine("MOV\tL, A");
+                        span = 1;
+                        break;
+                    case 0x70:
+                        Console.WriteLine("MOV\tM, B");
+                        span = 1;
+                        break;
+                    case 0x71:
+                        Console.WriteLine("MOV\tM, C");
+                        span = 1;
+                        break;
+                    case 0x72:
+                        Console.WriteLine("MOV\tM, D");
+                        span = 1;
+                        break;
+                    case 0x73:
+                        Console.WriteLine("MOV\tM, E");
+                        span = 1;
+                        break;
+                    case 0x74:
+                        Console.WriteLine("MOV\tM, H");
+                        span = 1;
+                        break;
+                    case 0x75:
+                        Console.WriteLine("MOV\tM, L");
+                        span = 1;
+                        break;
+                    case 0x76:
+                        Console.WriteLine("HLT");
+                        span = 1;
+                        break;
+                    case 0x77:
+                        Console.WriteLine("MOV\tM, A");
+                        span = 1;
+                        break;
+                    case 0x78:
+                        Console.WriteLine("MOV\tA, B");
+                        span = 1;
+                        break;
+                    case 0x79:
+                        Console.WriteLine("MOV\tA, C");
+                        span = 1;
+                        break;
+                    case 0x7a:
+                        Console.WriteLine("MOV\tA, D");
+                        span = 1;
+                        break;
+                    case 0x7b:
+                        Console.WriteLine("MOV\tA, E");
+                        span = 1;
+                        break;
+                    case 0x7c:
+                        Console.WriteLine("MOV\tA, H");
+                        span = 1;
+                        break;
+                    case 0x7d:
+                        Console.WriteLine("MOV\tA, L");
+                        span = 1;
+                        break;
+                    case 0x7e:
+                        Console.WriteLine("MOV\tA, M");
+                        span = 1;
+                        break;
+                    case 0x7f:
+                        Console.WriteLine("MOV\tA, A");
                         span = 1;
                         break;
                     default:
