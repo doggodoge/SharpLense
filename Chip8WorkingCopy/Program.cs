@@ -1,4 +1,5 @@
-﻿
+using System;
+
 namespace Chip8WorkingCopy
 {
     class Program
