@@ -1,12 +1,13 @@
-﻿using System;
-
+﻿
 namespace Chip8WorkingCopy
 {
     class Program
     {
         static void Main()
         {
-            throw new NotImplementedException();
+            var disassembler = new Disassembler();
+            
+            disassembler.Disassemble8080("./INVADERS");
         }
     }
 }
