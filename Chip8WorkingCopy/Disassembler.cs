@@ -10,7 +10,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Xml;
 
 namespace Chip8WorkingCopy
 {
@@ -45,7 +44,7 @@ namespace Chip8WorkingCopy
                 }
                 catch (Exception e)
                 {
-                    
+                        
                 }
                 ushort opcode = CombineBytes(b1, b2);
                 ushort opcode2 = CombineBytes(b3, b4);
