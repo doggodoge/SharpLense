@@ -1,33 +1,12 @@
-﻿using Veldrid;
-using Veldrid.StartupUtilities;
+﻿using System;
 
 namespace Chip8WorkingCopy
 {
     class Program
     {
-        private static GraphicsDevice _graphicsDevice;
-        
-        static void Main(string[] args)
+        static void Main()
         {
-            // Setup windowing system for .NET Core to
-            // display graphics from emulator
-            
-            var windowCi = new WindowCreateInfo
-            {
-                X = 100,
-                Y = 100,
-                WindowWidth = 960,
-                WindowHeight = 540,
-                WindowTitle = "Chip8 Emulator"
-            };
-            var window = VeldridStartup.CreateWindow(ref windowCi);
-
-            _graphicsDevice = VeldridStartup.CreateGraphicsDevice(window);
-
-            while (window.Exists)
-            {
-                window.PumpEvents();
-            }
+            throw new NotImplementedException();
         }
     }
 }
