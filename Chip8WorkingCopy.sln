@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chip8WorkingCopy", "Chip8WorkingCopy\Chip8WorkingCopy.csproj", "{180F980D-1E3A-4D7B-9A7B-69271258D114}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chip8WorkingCopyTests", "Chip8WorkingCopyTests\Chip8WorkingCopyTests.csproj", "{324AFDC3-C948-4C69-970A-9DACC69ED300}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{180F980D-1E3A-4D7B-9A7B-69271258D114}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{180F980D-1E3A-4D7B-9A7B-69271258D114}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{180F980D-1E3A-4D7B-9A7B-69271258D114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324AFDC3-C948-4C69-970A-9DACC69ED300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324AFDC3-C948-4C69-970A-9DACC69ED300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324AFDC3-C948-4C69-970A-9DACC69ED300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324AFDC3-C948-4C69-970A-9DACC69ED300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
