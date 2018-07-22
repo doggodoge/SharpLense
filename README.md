@@ -1,5 +1,5 @@
-# chip8-working-copy
-Currently a C# 8080 disassembler, will be a 8080 / chip8 emulator.
+# SharpLense
+This is a very utilitarian tool I made to take a closer look at GameBoy ROMs. It just presents all the opcodes of GameBoy machine code into more intelligible ASM-like stuff.
 
 ## Plans
-No concrete plans for this at the minute. I should have written tests, so I'll get on to that. I'd love to know if the massive switch statement is bad practice for this sort of program, it's mammoth!
+It all needs a serious refactor to turn it into a library and it was a mistake to hard code printing to the console in the giant switch. I know exactly how to make this better, so I'll be doing that. Also need to write some unit tests, because it may well be this doesn't actually work.
