@@ -7,7 +7,7 @@ namespace Chip8WorkingCopy
     {
         static void Main()
         {
-            throw new NotImplementedException();
+            // TODO Convert project to library and rename to 8080Disassembler
         }
     }
 }
