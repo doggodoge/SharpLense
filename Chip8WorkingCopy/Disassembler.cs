@@ -1,23 +1,20 @@
-﻿// This class will read a hex dump and print out formatted 8080 assembly
+﻿// This class will read a programs hex and print out formatted 8080 assembly
 // langauge.
 
-/*
- * Required structures
- *     codebuffer: the pointer to the current place in the file
- *     pc: The number of instructions since the start of the file
- */
 
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Chip8WorkingCopy
 {
     public class Disassembler
     {
-    
-        public void Disassemble8080(string fileToRead)
-        {
+        
+        public List<string> Disassemble8080ToList(string fileToRead)
+        {     
+            
             // Read bytes of 8080 binary to buffer
             var byteArray = File
                 .ReadAllBytes(fileToRead)
@@ -25,6 +22,9 @@ namespace Chip8WorkingCopy
             
             // Span specifies the amount of instructions to read ahead
             var i = 0;
+            
+            // List of parsed instructions to be returned from function
+            var parsedList = new List<string>();
             
             // An instruction is two bytes, so end of for is multiplied by 2
             while (i != byteArray.Length - 1)
@@ -37,8 +37,10 @@ namespace Chip8WorkingCopy
                 byte b4 = 0;
                 byte b5 = 0;
                 byte b6 = 0;
+                
                 try
                 {
+                    b1 = byteArray[i];
                     b2 = byteArray[i + 1];
                     b3 = byteArray[i + 2];
                     b4 = byteArray[i + 3];
@@ -56,1562 +58,1567 @@ namespace Chip8WorkingCopy
                 ushort opcode2 = CombineBytes(b3, b4);
                 ushort opcode3 = CombineBytes(b5, b6);
                 
-                Console.Write("0x{0:x3} ", i + 1);
+                // Create variable that stores generated code
+                var generatedCode = String.Format("0x{0:x3} ", i + 1);
                 
                 switch (opcode)
                 {
                     case 0x00:
                     {
-                        Console.WriteLine("NOP");
+                        generatedCode += "NOP";
                         span = 1;
                         break;
                     }
                     case 0x01:
                     {
-                        Console.WriteLine($"LXI\tB, #${opcode3:X}, #${opcode2:X}");
+                        generatedCode += $"LXI\tB, #${opcode3:X}, #${opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x02:
                     {
-                        Console.WriteLine($"STAX\tB");
+                        generatedCode += "STAX\tB";
                         span = 1;
                         break;
                     }
                     case 0x03:
                     {
-                        Console.WriteLine($"INX\tB");
+                        generatedCode += "INX\tB";
                         span = 3;
                         break;
                     }
                     case 0x04:
                     {
-                        Console.WriteLine($"INR\tB");
+                        generatedCode += "INR\tB";
                         span = 1;
                         break;
                     }
                     case 0x05:
                     {
-                        Console.WriteLine("DCR\tB");
+                        generatedCode += "DCR\tB";
                         span = 1;
                         break;
                     }
                     case 0x06:
                     {
-                        Console.WriteLine($"MVI\tB, #${opcode2:X}");
+                        generatedCode += $"MVI\tB, #${opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0x07:
                     {
-                        Console.WriteLine("RLC");
+                        generatedCode += "RLC";
                         span = 1;
                         break;
                     }
                     case 0x08:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0x09:
                     {
-                        Console.WriteLine("DAD\tB");
+                        generatedCode += "DAD\tB";
                         span = 1;
                         break;
                     }
                     case 0x0a:
                     {
-                        Console.WriteLine("LDAX\tB");
+                        generatedCode += "LDAX\tB";
                         span = 1;
                         break;
                     }
                     case 0x0b:
                     {
-                        Console.WriteLine("DCX\tB");
+                        generatedCode += "DCX\tB";
                         span = 1;
                         break;
                     }
                     case 0x0c:
                     {
-                        Console.WriteLine("INR\tC");
+                        generatedCode += "INR\tC";
                         span = 1;
                         break;
                     }
                     case 0x0d:
                     {
-                        Console.WriteLine("DCR\tC");
+                        generatedCode += "DCR\tC";
                         span = 1;
                         break;
                     }
                     case 0x0e:
                     {
-                        Console.WriteLine($"MVI\tC, {opcode2:X}");
+                        generatedCode += $"MVI\tC, {opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0x0f:
                     {
-                        Console.WriteLine("RRC");
+                        generatedCode += "RRC";
                         span = 1;
                         break;
                     }
                     case 0x10:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0x11:
                     {
-                        Console.WriteLine($"LXI\tD, #${opcode3:X}, #${opcode2:X}");
+                        generatedCode += $"LXI\tD, #${opcode3:X}, #${opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x12:
                     {
-                        Console.WriteLine("STAX\tD");
+                        generatedCode += "STAX\tD";
                         span = 1;
                         break;
                     }
                     case 0x13:
                     {
-                        Console.WriteLine("INX\tD");
+                        generatedCode += "INX\tD";
                         span = 1;
                         break;
                     }
                     case 0x14:
                     {
-                        Console.WriteLine("INR\tD");
+                        generatedCode += "INR\tD";
                         span = 1;
                         break;
                     }
                     case 0x15:
                     {
-                        Console.WriteLine("DCR\tD");
+                        generatedCode += "DCR\tD";
                         span = 1;
                         break;
                     }
                     case 0x16:
                     {
-                        Console.WriteLine($"MVI\tD, #${opcode2:X}");
+                        generatedCode += $"MVI\tD, #${opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0x17:
                     {
-                        Console.WriteLine("RAL");
+                        generatedCode += "RAL";
                         span = 1;
                         break;
                     }
                     case 0x18:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0x19:
                     {
-                        Console.WriteLine("DAD\tD");
+                        generatedCode += "DAD\tD";
                         span = 1;
                         break;
                     }
                     case 0x1a:
                     {
-                        Console.WriteLine("LDAX\tD");
+                        generatedCode += "LDAX\tD";
                         span = 1;
                         break;
                     }
                     case 0x1b:
                     {
-                        Console.WriteLine("DCX\tD");
+                        generatedCode += "DCX\tD";
                         span = 1;
                         break;
                     }
                     case 0x1c:
                     {
-                        Console.WriteLine("INR\tE");
+                        generatedCode += "INR\tE";
                         span = 1;
                         break;
                     }
                     case 0x1d:
                     {
-                        Console.WriteLine("DCR\tE");
+                        generatedCode += "DCR\tE";
                         span = 1;
                         break;
                     }
                     case 0x1e:
                     {
-                        Console.WriteLine($"MVI\tE, #${opcode2:X}");
+                        generatedCode += $"MVI\tE, #${opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0x1f:
                     {
-                        Console.WriteLine("RAR");
+                        generatedCode += "RAR";
                         span = 1;
                         break;
                     }
                     case 0x20:
                     {
-                        Console.WriteLine("RIM");
+                        generatedCode += "RIM";
                         span = 1;
                         break;
                     }
                     case 0x21:
                     {
-                        Console.WriteLine($"LXI\tH, #${opcode3:X}, #${opcode2:X}");
+                        generatedCode += $"LXI\tH, #${opcode3:X}, #${opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x22:
                     {
-                        Console.WriteLine($"SHLD\t0x{opcode2:X}");
+                        generatedCode += $"SHLD\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x23:
                     {
-                        Console.WriteLine("INX\tH");
+                        generatedCode += "INX\tH";
                         span = 1;
                         break;
                     }
                     case 0x24:
                     {
-                        Console.WriteLine("INR\tH");
+                        generatedCode += "INR\tH";
                         span = 1;
                         break;
                     }
                     case 0x25:
                     {
-                        Console.WriteLine("DCR\tH");
+                        generatedCode += "DCR\tH";
                         span = 1;
                         break;
                     }
                     case 0x26:
                     {
-                        Console.WriteLine($"MVI\tH, #${opcode2:X}");
+                        generatedCode += $"MVI\tH, #${opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0x27:
                     {
-                        Console.WriteLine("DAA");
+                        generatedCode += "DAA";
                         span = 1;
                         break;
                     }
                     case 0x28:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0x29:
                     {
-                        Console.WriteLine("DAD\tH");
+                        generatedCode += "DAD\tH";
                         span = 1;
                         break;
                     }
                     case 0x2a:
                     {
-                        Console.WriteLine($"LHLD\t0x{opcode2:X}");
+                        generatedCode += $"LHLD\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x2b:
                     {
-                        Console.WriteLine("DCX\tH");
+                        generatedCode += "DCX\tH";
                         span = 1;
                         break;
                     }
                     case 0x2c:
                     {
-                        Console.WriteLine("INR\tL");
+                        generatedCode += "INR\tL";
                         span = 1;
                         break;
                     }
                     case 0x2d:
                     {
-                        Console.WriteLine("DCR\tL");
+                        generatedCode += "DCR\tL";
                         span = 1;
                         break;
                     }
                     case 0x2e:
                     {
-                        Console.WriteLine($"MVI\tL, #${opcode2:X}");
+                        generatedCode += $"MVI\tL, #${opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0x2f:
                     {
-                        Console.WriteLine($"CMA");
+                        generatedCode += "CMA";
                         span = 1;
                         break;
                     }
                     case 0x30:
                     {
-                        Console.WriteLine("SIM");
+                        generatedCode += "SIM";
                         span = 1;
                         break;
                     }
                     case 0x31:
                     {
-                        Console.WriteLine($"LXI\tSP, #${opcode3:X}, #${opcode2:X}");
+                        generatedCode += $"LXI\tSP, #${opcode3:X}, #${opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x32:
                     {
-                        Console.WriteLine($"STA\t0x{opcode2:X}");
+                        generatedCode += $"STA\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x33:
                     {
-                        Console.WriteLine("INX\tSP");
+                        generatedCode += "INX\tSP";
                         span = 1;
                         break;
                     }
                     case 0x34:
                     {
-                        Console.WriteLine("INR\tM");
+                        generatedCode += "INR\tM";
                         span = 1;
                         break;
                     }
                     case 0x35:
                     {
-                        Console.WriteLine("DCR\tM");
+                        generatedCode += "DCR\tM";
                         span = 1;
                         break;
                     }
                     case 0x36:
                     {
-                        Console.WriteLine($"MVI\tM, #${opcode2:X}");
+                        generatedCode += $"MVI\tM, #${opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0x37:
                     {
-                        Console.WriteLine("STC");
+                        generatedCode += "STC";
                         span = 1;
                         break;
                     }
                     case 0x38:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0x39:
                     {
-                        Console.WriteLine("DAD\tSP");
+                        generatedCode += "DAD\tSP";
                         span = 1;
                         break;
                     }
                     case 0x3a:
                     {
-                        Console.WriteLine($"LDA\t0x{opcode2:X}");
+                        generatedCode += $"LDA\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x3b:
                     {
-                        Console.WriteLine("DCX\tSP");
+                        generatedCode += "DCX\tSP";
                         span = 1;
                         break;
                     }
                     case 0x3c:
                     {
-                        Console.WriteLine("INR\tA");
+                        generatedCode += "INR\tA";
                         span = 1;
                         break;
                     }
                     case 0x3d:
                     {
-                        Console.WriteLine("DCR\tA");
+                        generatedCode += "DCR\tA";
                         span = 1;
                         break;
                     }
                     case 0x3e:
                     {
-                        Console.WriteLine($"MVI\tA, #${opcode2:X}");
+                        generatedCode += $"MVI\tA, #${opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0x3f:
                     {
-                        Console.WriteLine("CMC");
+                        generatedCode += "CMC";
                         span = 1;
                         break;
                     }
                     case 0x40:
                     {
-                        Console.WriteLine("MOV\tB, B");
+                        generatedCode += "MOV\tB, B";
                         span = 1;
                         break;
                     }
                     case 0x41:
                     {
-                        Console.WriteLine("MOV\tB, C");
+                        generatedCode += "MOV\tB, C";
                         span = 1;
                         break;
                     }
                     case 0x42:
                     {
-                        Console.WriteLine("MOV\tB, D");
+                        generatedCode += "MOV\tB, D";
                         span = 1;
                         break;
                     }
                     case 0x43:
                     {
-                        Console.WriteLine("MOV\tB, E");
+                        generatedCode += "MOV\tB, E";
                         span = 1;
                         break;
                     }
                     case 0x44:
                     {
-                        Console.WriteLine("MOV\tB, H");
+                        generatedCode += "MOV\tB, H"; 
                         span = 1;
                         break;
                     }
                     case 0x45:
                     {
-                        Console.WriteLine("MOB\tB, L");
+                        generatedCode += "MOB\tB, L";
                         span = 1;
                         break;
                     }
                     case 0x46:
                     {
-                        Console.WriteLine("MOV\tB, M");
+                        generatedCode += "MOV\tB, M";
                         span = 1;
                         break;
                     }
                     case 0x47:
                     {
-                        Console.WriteLine("MOV\tB, A");
+                        generatedCode += "MOV\tB, A";
                         span = 1;
                         break;
                     }
                     case 0x48:
                     {
-                        Console.WriteLine("MOV\tC, B");
+                        generatedCode += "MOV\tC, B";
                         span = 1;
                         break;
                     }
                     case 0x49:
                     {
-                        Console.WriteLine("MOV\tC, C");
+                        generatedCode += "MOV\tC, C";
                         span = 1;
                         break;
                     }
                     case 0x4a:
                     {
-                        Console.WriteLine("MOV\tC, D");
+                        generatedCode += "MOV\tC, D";
                         span = 1;
                         break;
                     }
                     case 0x4b:
                     {
-                        Console.WriteLine("MOV\tC, E");
+                        generatedCode += "MOV\tC, E";
                         span = 1;
                         break;
                     }
                     case 0x4c:
                     {
-                        Console.WriteLine("MOV\tC, H");
+                        generatedCode += "MOV\tC, H";
                         span = 1;
                         break;
                     }
                     case 0x4d:
                     {
-                        Console.WriteLine("MOV\tC, L");
+                        generatedCode += "MOV\tC, L";
                         span = 1;
                         break;
                     }
                     case 0x4e:
                     {
-                        Console.WriteLine("MOV\tC, M");
+                        generatedCode += "MOV\tC, M";
                         span = 1;
                         break;
                     }
                     case 0x4f:
                     {
-                        Console.WriteLine("MOV\tC, A");
+                        generatedCode += "MOV\tC, A";
                         span = 1;
                         break;
                     }
                     case 0x50:
                     {
-                        Console.WriteLine("MOV\tD, B");
+                        generatedCode += "MOV\tD, B";
                         span = 1;
                         break;
                     }
                     case 0x51:
                     {
-                        Console.WriteLine("MOV\tD, C");
+                        generatedCode += "MOV\tD, C";
                         span = 1;
                         break;
                     }
                     case 0x52:
                     {
-                        Console.WriteLine("MOV\tD, D");
+                        generatedCode += "MOV\tD, D";
                         span = 1;
                         break;
                     }
                     case 0x53:
                     {
-                        Console.WriteLine("MOV\tD, E");
+                        generatedCode += "MOV\tD, E";
                         span = 1;
                         break;
                     }
                     case 0x54:
                     {
-                        Console.WriteLine("MOV\tD, H");
+                        generatedCode += "MOV\tD, H";
                         span = 1;
                         break;
                     }
                     case 0x55:
                     {
-                        Console.WriteLine("MOV\tD, L");
+                        generatedCode += "MOV\tD, L";
                         span = 1;
                         break;
                     }
                     case 0x56:
                     {
-                        Console.WriteLine("MOV\tD, M");
+                        generatedCode += "MOV\tD, M";
                         span = 1;
                         break;
                     }
                     case 0x57:
                     {
-                        Console.WriteLine("MOV\tD, A");
+                        generatedCode += "MOV\tD, A";
                         span = 1;
                         break;
                     }
                     case 0x58:
                     {
-                        Console.WriteLine("MOV\tE, B");
+                        generatedCode += "MOV\tE, B";
                         span = 1;
                         break;
                     }
                     case 0x59:
                     {
-                        Console.WriteLine("MOV\tE, C");
+                        generatedCode += "MOV\tE, C";
                         span = 1;
                         break;
                     }
                     case 0x5a:
                     {
-                        Console.WriteLine("MOV\tE, D");
+                        generatedCode += "MOV\tE, D";
                         span = 1;
                         break;
                     }
                     case 0x5b:
                     {
-                        Console.WriteLine("MOV\tE, E");
+                        generatedCode += "MOV\tE, E";
                         span = 1;
                         break;
                     }
                     case 0x5c:
                     {
-                        Console.WriteLine("MOV\tE, H");
+                        generatedCode += "MOV\tE, H";
                         span = 1;
                         break;
                     }
                     case 0x5d:
                     {
-                        Console.WriteLine("MOV\tE, L");
+                        generatedCode += "MOV\tE, L";
                         span = 1;
                         break;
                     }
                     case 0x5e:
                     {
-                        Console.WriteLine("MOV\tE, M");
+                        generatedCode += "MOV\tE, M";
                         span = 1;
                         break;
                     }
                     case 0x5f:
                     {
-                        Console.WriteLine("MOV\tE, A");
+                        generatedCode += "MOV\tE, A";
                         span = 1;
                         break;
                     }
                     case 0x60:
                     {
-                        Console.WriteLine("MOV\tH, B");
+                        generatedCode += "MOV\tH, B";
                         span = 1;
                         break;
                     }
                     case 0x61:
                     {
-                        Console.WriteLine("MOV\tH, C");
+                        generatedCode += "MOV\tH, C";
                         span = 1;
                         break;
                     }
                     case 0x62:
                     {
-                        Console.WriteLine("MOV\tH, D");
+                        generatedCode += "MOV\tH, D";
                         span = 1;
                         break;
                     }
                     case 0x63:
                     {
-                        Console.WriteLine("MOV\tH, E");
+                        generatedCode += "MOV\tH, E";
                         span = 1;
                         break;
                     }
                     case 0x64:
                     {
-                        Console.WriteLine("MOV\tH, H");
+                        generatedCode += "MOV\tH, H";
                         span = 1;
                         break;
                     }
                     case 0x65:
                     {
-                        Console.WriteLine("MOV\tH, L");
+                        generatedCode += "MOV\tH, L";
                         span = 1;
                         break;
                     }
                     case 0x66:
                     {
-                        Console.WriteLine("MOV\tH, M");
+                        generatedCode += "MOV\tH, M";
                         span = 1;
                         break;
                     }
                     case 0x67:
                     {
-                        Console.WriteLine("MOV\tH, A");
+                        generatedCode += "MOV\tH, A";
                         span = 1;
                         break;
                     }
                     case 0x68:
                     {
-                        Console.WriteLine("MOV\tL, B");
+                        generatedCode += "MOV\tL, B";
                         span = 1;
                         break;
                     }
                     case 0x69:
                     {
-                        Console.WriteLine("MOV\tL, C");
+                        generatedCode += "MOV\tL, C";
                         span = 1;
                         break;
                     }
                     case 0x6a:
                     {
-                        Console.WriteLine("MOV\tL, D");
+                        generatedCode += "MOV\tL, D";
                         span = 1;
                         break;
                     }
                     case 0x6b:
                     {
-                        Console.WriteLine("MOV\tL, E");
+                        generatedCode += "MOV\tL, E";
                         span = 1;
                         break;
                     }
                     case 0x6c:
                     {
-                        Console.WriteLine("MOV\tL, H");
+                        generatedCode += "MOV\tL, H";
                         span = 1;
                         break;
                     }
                     case 0x6d:
                     {
-                        Console.WriteLine("MOV\tL, L");
+                        generatedCode += "MOV\tL, L";
                         span = 1;
                         break;
                     }
                     case 0x6e:
                     {
-                        Console.WriteLine("MOV\tL, M");
+                        generatedCode += "MOV\tL, M";
                         span = 1;
                         break;
                     }
                     case 0x6f:
                     {
-                        Console.WriteLine("MOV\tL, A");
+                        generatedCode += "MOV\tL, A";
                         span = 1;
                         break;
                     }
                     case 0x70:
                     {
-                        Console.WriteLine("MOV\tM, B");
+                        generatedCode += "MOV\tM, B";
                         span = 1;
                         break;
                     }
                     case 0x71:
                     {
-                        Console.WriteLine("MOV\tM, C");
+                        generatedCode += "MOV\tM, C";
                         span = 1;
                         break;
                     }
                     case 0x72:
                     {
-                        Console.WriteLine("MOV\tM, D");
+                        generatedCode += "MOV\tM, D";
                         span = 1;
                         break;
                     }
                     case 0x73:
                     {
-                        Console.WriteLine("MOV\tM, E");
+                        generatedCode += "MOV\tM, E";
                         span = 1;
                         break;
                     }
                     case 0x74:
                     {
-                        Console.WriteLine("MOV\tM, H");
+                        generatedCode += "MOV\tM, H";
                         span = 1;
                         break;
                     }
                     case 0x75:
                     {
-                        Console.WriteLine("MOV\tM, L");
+                        generatedCode += "MOV\tM, L";
                         span = 1;
                         break;
                     }
                     case 0x76:
                     {
-                        Console.WriteLine("HLT");
+                        generatedCode += "HLT";
                         span = 1;
                         break;
                     }
                     case 0x77:
                     {
-                        Console.WriteLine("MOV\tM, A");
+                        generatedCode += "MOV\tM, A";
                         span = 1;
                         break;
                     }
                     case 0x78:
                     {
-                        Console.WriteLine("MOV\tA, B");
+                        generatedCode += "MOV\tA, B";
                         span = 1;
                         break;
                     }
                     case 0x79:
                     {
-                        Console.WriteLine("MOV\tA, C");
+                        generatedCode += "MOV\tA, C";
                         span = 1;
                         break;
                     }
                     case 0x7a:
                     {
-                        Console.WriteLine("MOV\tA, D");
+                        generatedCode += "MOV\tA, D";
                         span = 1;
                         break;
                     }
                     case 0x7b:
                     {
-                        Console.WriteLine("MOV\tA, E");
+                        generatedCode += "MOV\tA, E";
                         span = 1;
                         break;
                     }
                     case 0x7c:
                     {
-                        Console.WriteLine("MOV\tA, H");
+                        generatedCode += "MOV\tA, H";
                         span = 1;
                         break;
                     }
                     case 0x7d:
                     {
-                        Console.WriteLine("MOV\tA, L");
+                        generatedCode += "MOV\tA, L";
                         span = 1;
                         break;
                     }
                     case 0x7e:
                     {
-                        Console.WriteLine("MOV\tA, M");
+                        generatedCode += "MOV\tA, M";
                         span = 1;
                         break;
                     }
                     case 0x7f:
                     {
-                        Console.WriteLine("MOV\tA, A");
+                        generatedCode += "MOV\tA, A";
                         span = 1;
                         break;
                     }
                     case 0x80:
                     {
-                        Console.WriteLine("ADD\tB");
+                        generatedCode += "ADD\tB";
                         span = 1;
                         break;
                     }
                     case 0x81:
                     {
-                        Console.WriteLine("ADD\tC");
+                        generatedCode += "ADD\tC";
                         span = 1;
                         break;
                     }
                     case 0x82:
                     {
-                        Console.WriteLine("ADD\tD");
+                        generatedCode += "ADD\tD";
                         span = 1;
                         break;
                     }
                     case 0x83:
                     {
-                        Console.WriteLine("ADD\tE");
+                        generatedCode += "ADD\tE";
                         span = 1;
                         break;
                     }
                     case 0x84:
                     {
-                        Console.WriteLine("ADD\tH");
+                        generatedCode += "ADD\tH";
                         span = 1;
                         break;
                     }
                     case 0x85:
                     {
-                        Console.WriteLine("ADD\tL");
+                        generatedCode += "ADD\tL";
                         span = 1;
                         break;
                     }
                     case 0x86:
                     {
-                        Console.WriteLine("ADD\tM");
+                        generatedCode += "ADD\tM";
                         span = 1;
                         break;
                     }
                     case 0x87:
                     {
-                        Console.WriteLine("ADD\tA");
+                        generatedCode += "ADD\tA";
                         span = 1;
                         break;
                     }
                     case 0x88:
                     {
-                        Console.WriteLine("ADC\tB");
+                        generatedCode += "ADC\tB";
                         span = 1;
                         break;
                     }
                     case 0x89:
                     {
-                        Console.WriteLine("ADC\tC");
+                        generatedCode += "ADC\tC";
                         span = 1;
                         break;
                     }
                     case 0x8a:
                     {
-                        Console.WriteLine("ADC\tD");
+                        generatedCode += "ADC\tD";
                         span = 1;
                         break;
                     }
                     case 0x8b:
                     {
-                        Console.WriteLine("ADC\tE");
+                        generatedCode += "ADC\tE";
                         span = 1;
                         break;
                     }
                     case 0x8c:
                     {
-                        Console.WriteLine("ADC\tH");
+                        generatedCode += "ADC\tH";
                         span = 1;
                         break;
                     }
                     case 0x8d:
                     {
-                        Console.WriteLine("ADC\tL");
+                        generatedCode += "ADC\tL";
                         span = 1;
                         break;
                     }
                     case 0x8e:
                     {
-                        Console.WriteLine("ADC\tM");
+                        generatedCode += "ADC\tM";
                         span = 1;
                         break;
                     }
                     case 0x8f:
                     {
-                        Console.WriteLine("ADC\tA");
+                        generatedCode += "ADC\tA";
                         span = 1;
                         break;
                     }
                     case 0x90:
                     {
-                        Console.WriteLine("SUB\tB");
+                        generatedCode += "SUB\tB";
                         span = 1;
                         break;
                     }
                     case 0x91:
                     {
-                        Console.WriteLine("SUB\tC");
+                        generatedCode += "SUB\tC";
                         span = 1;
                         break;
                     }
                     case 0x92:
                     {
-                        Console.WriteLine("SUB\tD");
+                        generatedCode += "SUB\tD";
                         span = 1;
                         break;
                     }
                     case 0x93:
                     {
-                        Console.WriteLine("SUB\tE");
+                        generatedCode += "SUB\tE";
                         span = 1;
                         break;
                     }
                     case 0x94:
                     {
-                        Console.WriteLine("SUB\tH");
+                        generatedCode += "SUB\tH";
                         span = 1;
                         break;
                     }
                     case 0x95:
                     {
-                        Console.WriteLine("SUB\tL");
+                        generatedCode += "SUB\tL";
                         span = 1;
                         break;
                     }
                     case 0x96:
                     {
-                        Console.WriteLine("SUB\tM");
+                        generatedCode += "SUB\tM";
                         span = 1;
                         break;
                     }
                     case 0x97:
                     {
-                        Console.WriteLine("SUB\tA");
+                        generatedCode += "SUB\tA";
                         span = 1;
                         break;
                     }
                     case 0x98:
                     {
-                        Console.WriteLine("SBB\tB");
+                        generatedCode += "SBB\tB";
                         span = 1;
                         break;
                     }
                     case 0x99:
                     {
-                        Console.WriteLine("SBB\tC");
+                        generatedCode += "SBB\tC";
                         span = 1;
                         break;
                     }
                     case 0x9a:
                     {
-                        Console.WriteLine("SBB\tD");
+                        generatedCode += "SBB\tD";
                         span = 1;
                         break;
                     }
                     case 0x9b:
                     {
-                        Console.WriteLine("SBB\tE");
+                        generatedCode += "SBB\tE";
                         span = 1;
                         break;
                     }
                     case 0x9c:
                     {
-                        Console.WriteLine("SBB\tH");
+                        generatedCode += "SBB\tH";
                         span = 1;
                         break;
                     }
                     case 0x9d:
                     {
-                        Console.WriteLine("SBB\tL");
+                        generatedCode += "SBB\tL";
                         span = 1;
                         break;
                     }
                     case 0x9e:
                     {
-                        Console.WriteLine("SBB\tM");
+                        generatedCode += "SBB\tM";
                         span = 1;
                         break;
                     }
                     case 0x9f:
                     {
-                        Console.WriteLine("SBB\tA");
+                        generatedCode += "SBB\tA";
                         span = 1;
                         break;
                     }
                     case 0xa0:
                     {
-                        Console.WriteLine("ANA\tB");
+                        generatedCode += "ANA\tB"; 
                         span = 1;
                         break;
                     }
                     case 0xa1:
                     {
-                        Console.WriteLine("ANA\tC");
+                        generatedCode += "ANA\tC";
                         span = 1;
                         break;
                     }
                     case 0xa2:
                     {
-                        Console.WriteLine("ANA\tD");
+                        generatedCode += "ANA\tD";
                         span = 1;
                         break;
                     }
                     case 0xa3:
                     {
-                        Console.WriteLine("ANA\tE");
+                        generatedCode += "ANA\tE";
                         span = 1;
                         break;
                     }
                     case 0xa4:
                     {
-                        Console.WriteLine("ANA\tH");
+                        generatedCode += "ANA\tH";
                         span = 1;
                         break;
                     }
                     case 0xa5:
                     {
-                        Console.WriteLine("ANA\tL");
+                        generatedCode += "ANA\tL";
                         span = 1;
                         break;
                     }
                     case 0xa6:
                     {
-                        Console.WriteLine("ANA\tM");
+                        generatedCode += "ANA\tM";
                         span = 1;
                         break;
                     }
                     case 0xa7:
                     {
-                        Console.WriteLine("ANA\tA");
+                        generatedCode += "ANA\tA";
                         span = 1;
                         break;
                     }
                     case 0xa8:
                     {
-                        Console.WriteLine("XRA\tB");
+                        generatedCode += "XRA\tB";
                         span = 1;
                         break;
                     }
                     case 0xa9:
                     {
-                        Console.WriteLine("XRA\tC");
+                        generatedCode += "XRA\tC";
                         span = 1;
                         break;
                     }
                     case 0xaa:
                     {
-                        Console.WriteLine("XRA\tD");
+                        generatedCode += "XRA\tD";
                         span = 1;
                         break;
                     }
                     case 0xab:
                     {
-                        Console.WriteLine("XRA\tE");
+                        generatedCode += "XRA\tE";
                         span = 1;
                         break;
                     }
                     case 0xac:
                     {
-                        Console.WriteLine("XRA\tH");
+                        generatedCode += "XRA\tH";
                         span = 1;
                         break;
                     }
                     case 0xad:
                     {
-                        Console.WriteLine("XRA\tL");
+                        generatedCode += "XRA\tL";
                         span = 1;
                         break;
                     }
                     case 0xae:
                     {
-                        Console.WriteLine("XRA\tM");
+                        generatedCode += "XRA\tM";
                         span = 1;
                         break;
                     }
                     case 0xaf:
                     {
-                        Console.WriteLine("XRA\tA");
+                        generatedCode += "XRA\tA";
                         span = 1;
                         break;
                     }
                     case 0xb0:
                     {
-                        Console.WriteLine("ORA\tB");
+                        generatedCode += "ORA\tB";
                         span = 1;
                         break;
                     }
                     case 0xb1:
                     {
-                        Console.WriteLine("ORA\tC");
+                        generatedCode += "ORA\tC";
                         span = 1;
                         break;
                     }
                     case 0xb2:
                     {
-                        Console.WriteLine("ORA\tD");
+                        generatedCode += "ORA\tD";
                         span = 1;
                         break;
                     }
                     case 0xb3:
                     {
-                        Console.WriteLine("ORA\tE");
+                        generatedCode += "ORA\tE";
                         span = 1;
                         break;
                     }
                     case 0xb4:
                     {
-                        Console.WriteLine("ORA\tH");
+                        generatedCode += "ORA\tH";
                         span = 1;
                         break;
                     }
                     case 0xb5:
                     {
-                        Console.WriteLine("ORA\tL");
+                        generatedCode += "ORA\tL";
                         span = 1;
                         break;
                     }
                     case 0xb6:
                     {
-                        Console.WriteLine("ORA\tM");
+                        generatedCode += "ORA\tM";
                         span = 1;
                         break;
                     }
                     case 0xb7:
                     {
-                        Console.WriteLine("ORA\tA");
+                        generatedCode += "ORA\tA";
                         span = 1;
                         break;
                     }
                     case 0xb8:
                     {
-                        Console.WriteLine("CMP\tB");
+                        generatedCode += "CMP\tB";
                         span = 1;
                         break;
                     }
                     case 0xb9:
                     {
-                        Console.WriteLine("CMP\tC");
+                        generatedCode += "CMP\tC";
                         span = 1;
                         break;
                     }
                     case 0xba:
                     {
-                        Console.WriteLine("CMP\tD");
+                        generatedCode += "CMP\tD";
                         span = 1;
                         break;
                     }
                     case 0xbb:
                     {
-                        Console.WriteLine("CMP\tE");
+                        generatedCode += "CMP\tE";
                         span = 1;
                         break;
                     }
                     case 0xbc:
                     {
-                        Console.WriteLine("CMP\tH");
+                        generatedCode += "CMP\tH";
                         span = 1;
                         break;
                     }
                     case 0xbd:
                     {
-                        Console.WriteLine("CMP\tL");
+                        generatedCode += "CMP\tL";
                         span = 1;
                         break;
                     }
                     case 0xbe:
                     {
-                        Console.WriteLine("CMP\tM");
+                        generatedCode += "CMP\tM";
                         span = 1;
                         break;
                     }
                     case 0xbf:
                     {
-                        Console.WriteLine("CMP\tA");
+                        generatedCode += "CMP\tA";
                         span = 1;
                         break;
                     }
                     case 0xc0:
                     {
-                        Console.WriteLine("RNZ");
+                        generatedCode += "RNZ";
                         span = 1;
                         break;
                     }
                     case 0xc1:
                     {
-                        Console.WriteLine("POP\tB");
+                        generatedCode += "POP\tB";
                         span = 1;
                         break;
                     }
                     case 0xc2:
                     {
-                        Console.WriteLine($"JNZ\t0x{opcode2:X}");
+                        generatedCode += $"JNZ\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xc3:
                     {
-                        Console.WriteLine($"JMP\t0x{opcode2:X}");
+                        generatedCode += $"JMP\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xc4:
                     {
-                        Console.WriteLine($"CNZ\t0x{opcode2:X}");
+                        generatedCode += $"CNZ\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xc5:
                     {
-                        Console.WriteLine("PUSH\tB");
+                        generatedCode += "PUSH\tB";
                         span = 1;
                         break;
                     }
                     case 0xc6:
                     {
-                        Console.WriteLine($"ADI\t#${opcode2:X}");
+                        generatedCode += $"ADI\t#${opcode2:X}";
                         span = 2;
                         break;
                     }
                     case 0xc7:
                     {
-                        Console.WriteLine("RST\t0");
+                        generatedCode += "RST\t0";
                         span = 1;
                         break;
                     }
                     case 0xc8:
                     {
-                        Console.WriteLine("RZ");
+                        generatedCode += "RZ";
                         span = 1;
                         break;
                     }
                     case 0xc9:
                     {
-                        Console.WriteLine("RET");
+                        generatedCode += "RET";
                         span = 1;
                         break;
                     }
                     case 0xca:
                     {
-                        Console.WriteLine($"JZ\t0x{opcode2:X}");
+                        generatedCode += $"JZ\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xcb:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0xcc:
                     {
-                        Console.WriteLine($"CZ\t0x{opcode2:X}");
+                        generatedCode += $"CZ\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xcd:
                     {
-                        Console.WriteLine($"CALL\t0x{opcode2:X}");
+                        generatedCode += $"CALL\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xce:
                     {
-                        Console.WriteLine("ACI");
+                        generatedCode += "ACI";
                         span = 2;
                         break;
                     }
                     case 0xcf:
                     {
-                        Console.WriteLine("RST");
+                        generatedCode += "RST";
                         span = 1;
                         break;
                     }
                     case 0xd0:
                     {
-                        Console.WriteLine("RNC");
+                        generatedCode += "RNC";
                         span = 1;
                         break;
                     }
                     case 0xd1:
                     {
-                        Console.WriteLine("POP\tD");
+                        generatedCode += "POP\tD";
                         span = 1;
                         break;
                     }
                     case 0xd2:
                     {
-                        Console.WriteLine($"JNC\t0x{opcode2:X}");
+                        generatedCode += $"JNC\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xd3:
                     {
-                        Console.WriteLine("OUT\tD3");
+                        generatedCode += "OUT\tD3";
                         span = 1;
                         break;
                     }
                     case 0xd4:
                     {
-                        Console.WriteLine($"CNC\t0x{opcode2:X}");
+                        generatedCode += $"CNC\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xd5:
                     {
-                        Console.WriteLine("PUSH\tD");
+                        generatedCode += "PUSH\tD";
                         span = 1;
                         break;
                     }
                     case 0xd6:
                     {
-                        Console.WriteLine("SUI\tD");
+                        generatedCode += "SUI\tD";
                         span = 2;
                         break;
                     }
                     case 0xd7:
                     {
-                        Console.WriteLine("RST\t2");
+                        generatedCode += "RST\t2";
                         span = 1;
                         break;
                     }
                     case 0xd8:
                     {
-                        Console.WriteLine("RC");
+                        generatedCode += "RC";
                         span = 1;
                         break;
                     }
                     case 0xd9:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0xda:
                     {
-                        Console.WriteLine($"JC\t0x{opcode2:X}");
+                        generatedCode += $"JC\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xdb:
                     {
-                        Console.WriteLine("IN\tD8");
+                        generatedCode += "IN\tD8";
                         span = 2;
                         break;
                     }
                     case 0xdc:
                     {
-                        Console.WriteLine($"CC\t0x{opcode2:X}");
+                        generatedCode += $"CC\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xdd:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0xde:
                     {
-                        Console.WriteLine("SBI\tD8");
+                        generatedCode += "SBI\tD8";
                         span = 2;
                         break;
                     }
                     case 0xdf:
                     {
-                        Console.WriteLine("RST\t3");
+                        generatedCode += "RST\t3";
                         span = 1;
                         break;
                     }
                     case 0xe0:
                     {
-                        Console.WriteLine("RPO");
+                        generatedCode += "RPO";
                         span = 1;
                         break;
                     }
                     case 0xe1:
                     {
-                        Console.WriteLine("POP\tH");
+                        generatedCode += "POP\tH";
                         span = 1;
                         break;
                     }
                     case 0xe2:
                     {
-                        Console.WriteLine($"JPO\t0x{opcode2:X}");
+                        generatedCode += $"JPO\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xe3:
                     {
-                        Console.WriteLine("XTHL");
+                        generatedCode += "XTHL";
                         span = 1;
                         break;
                     }
                     case 0xe4:
                     {
-                        Console.WriteLine($"CPO\t0x{opcode2:X}");
+                        generatedCode += $"CPO\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xe5:
                     {
-                        Console.WriteLine("PUSH\tH");
+                        generatedCode += "PUSH\tH";
                         span = 1;
                         break;
                     }
                     case 0xe6:
                     {
-                        Console.WriteLine("ANI\tD8");
+                        generatedCode += "ANI\tD8";
                         span = 2;
                         break;
                     }
                     case 0xe7:
                     {
-                        Console.WriteLine("RST\t4");
+                        generatedCode += "RST\t4";
                         span = 1;
                         break;
                     }
                     case 0xe8:
                     {
-                        Console.WriteLine("RPE");
+                        generatedCode += "RPE"; 
                         span = 1;
                         break;
                     }
                     case 0xe9:
                     {
-                        Console.WriteLine("PCHL");
+                        generatedCode += "PCHL";
                         span = 1;
                         break;
                     }
                     case 0xea:
                     {
-                        Console.WriteLine($"JPE\t0x{opcode2:X}");
+                        generatedCode += $"JPE\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xeb:
                     {
-                        Console.WriteLine("XCHG");
+                        generatedCode += "XCHG";
                         span = 1;
                         break;
                     }
                     case 0xec:
                     {
-                        Console.WriteLine($"CPE\t0x{opcode2:X}");
+                        generatedCode += $"CPE\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xed:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0xee:
                     {
-                        Console.WriteLine("XRI\tD8");
+                        generatedCode += "XRI\tD8";
                         span = 2;
                         break;
                     }
                     case 0xef:
                     {
-                        Console.WriteLine("RST\t5");
+                        generatedCode += "RST\t5";
                         span = 1;
                         break;
                     }
                     case 0xf0:
                     {
-                        Console.WriteLine("RP");
+                        generatedCode += "RP";
                         span = 1;
                         break;
                     }
                     case 0xf1:
                     {
-                        Console.WriteLine("POP\tPSW");
+                        generatedCode += "POP\tPSW";
                         span = 1;
                         break;
                     }
                     case 0xf2:
                     {
-                        Console.WriteLine($"JP\t0x{opcode2:X}");
+                        generatedCode += $"JP\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xf3:
                     {
-                        Console.WriteLine("DI");
+                        generatedCode += "DI";
                         span = 1;
                         break;
                     }
                     case 0xf4:
                     {
-                        Console.WriteLine($"CP\t0x{opcode2:X}");
+                        generatedCode += $"CP\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xf5:
                     {
-                        Console.WriteLine("PUSH\tPSW");
+                        generatedCode += "PUSH\tPSW";
                         span = 1;
                         break;
                     }
                     case 0xf6:
                     {
-                        Console.WriteLine("ORI\tD8");
+                        generatedCode += "ORI\tD8";
                         span = 2;
                         break;
                     }
                     case 0xf7:
                     {
-                        Console.WriteLine("RST\t6");
+                        generatedCode += "RST\t6";
                         span = 1;
                         break;
                     }
                     case 0xf8:
                     {
-                        Console.WriteLine("RM");
+                        generatedCode += "RM";
                         span = 1;
                         break;
                     }
                     case 0xf9:
                     {
-                        Console.WriteLine("SPHL");
+                        generatedCode += "SPHL";
                         span = 1;
                         break;
                     }
                     case 0xfa:
                     {
-                        Console.WriteLine($"JM\t0x{opcode2:X}");
+                        generatedCode += $"JM\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xfb:
                     {
-                        Console.WriteLine("EI");
+                        generatedCode += "EI";
                         span = 1;
                         break;
                     }
                     case 0xfc:
                     {
-                        Console.WriteLine($"CM\t0x{opcode2:X}");
+                        generatedCode += $"CM\t0x{opcode2:X}";
                         span = 3;
                         break;
                     }
                     case 0xfd:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                     case 0xfe:
                     {
-                        Console.WriteLine("CPI\tD8");
+                        generatedCode += "CPI\tD8";
                         span = 2;
                         break;
                     }
                     case 0xff:
                     {
-                        Console.WriteLine("RST\t7");
+                        generatedCode += "RST\t7";
                         span = 2;
                         break;
                     }
                     default:
                     {
-                        Console.WriteLine("-");
+                        generatedCode += "-";
                         span = 1;
                         break;
                     }
                 }
 
+                parsedList.Add(generatedCode);
+                
                 i += 2 * span;
             }
+
+            return parsedList;
         }
 
-        ushort CombineBytes(byte b1, byte b2)
+        private ushort CombineBytes(byte b1, byte b2)
         {
-            ushort combined = (ushort) (b1 << 8 | b2);
-            return combined;
+            ushort result = (ushort) ((b1 << 8) | b2);
+            return result;
         }
     }
 }
