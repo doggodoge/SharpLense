@@ -6,7 +6,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Chip8WorkingCopy
 {
@@ -1614,12 +1613,6 @@ namespace Chip8WorkingCopy
             }
 
             return parsedList;
-        }
-
-        private ushort CombineBytes(byte b1, byte b2)
-        {
-            ushort result = (ushort) ((b1 << 8) | b2);
-            return result;
         }
     }
 }
