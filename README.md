@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/MadManGaz/SharpLense.svg?branch=master)](https://travis-ci.com/MadManGaz/SharpLense)
+
 # SharpLense
 This is a very utilitarian tool I made to take a closer look at GameBoy ROMs. It just presents all the opcodes of GameBoy machine code into more intelligible ASM-like stuff.
 
