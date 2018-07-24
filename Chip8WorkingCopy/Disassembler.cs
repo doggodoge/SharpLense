@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Chip8WorkingCopy
 {
@@ -34,29 +35,29 @@ namespace Chip8WorkingCopy
                 byte b1 = 0;
                 byte b2 = 0;
                 byte b3 = 0;
-                byte b4 = 0;
-                byte b5 = 0;
-                byte b6 = 0;
-                
+                // byte b6 = 0;
+                // byte b5 = 0;
+                // byte b4 = 0;
+
                 try
                 {
                     b1 = byteArray[i];
                     b2 = byteArray[i + 1];
                     b3 = byteArray[i + 2];
-                    b4 = byteArray[i + 3];
-                    b5 = byteArray[i + 4];
-                    b6 = byteArray[i + 5];
+                    // b4 = byteArray[i + 3];
+                    // b5 = byteArray[i + 4];
+                    // b6 = byteArray[i + 5];
                 }
                 catch (Exception)
                 {
-                        Console.WriteLine("Reached end of file");
+                    Console.WriteLine("Reached end of file");
                 }
                 
                 // CombineBytes is a dodgy hack that uses bitshifting
                 // to convert between datatypes, this should be changed
-                ushort opcode = CombineBytes(b1, b2);
-                ushort opcode2 = CombineBytes(b3, b4);
-                ushort opcode3 = CombineBytes(b5, b6);
+                ushort opcode = b1; // CombineBytes(b1, b2);
+                ushort opcode2 = b2; // CombineBytes(b3, b4);
+                ushort opcode3 = b3; // CombineBytes(b5, b6);
                 
                 // Create variable that stores generated code
                 var generatedCode = String.Format("0x{0:x3} ", i + 1);
@@ -1609,7 +1610,7 @@ namespace Chip8WorkingCopy
 
                 parsedList.Add(generatedCode);
                 
-                i += 2 * span;
+                i += span;
             }
 
             return parsedList;
