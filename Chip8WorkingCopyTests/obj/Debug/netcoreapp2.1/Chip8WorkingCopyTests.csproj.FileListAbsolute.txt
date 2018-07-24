@@ -1,0 +1,17 @@
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/xunit.runner.reporters.netcoreapp10.dll
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/xunit.runner.utility.netcoreapp10.dll
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/Chip8WorkingCopyTests.deps.json
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/Chip8WorkingCopyTests.runtimeconfig.json
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/Chip8WorkingCopyTests.runtimeconfig.dev.json
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/Chip8WorkingCopyTests.dll
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/Chip8WorkingCopyTests.pdb
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/Chip8WorkingCopy.dll
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/bin/Debug/netcoreapp2.1/Chip8WorkingCopy.pdb
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/obj/Debug/netcoreapp2.1/Chip8WorkingCopyTests.csprojAssemblyReference.cache
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/obj/Debug/netcoreapp2.1/Chip8WorkingCopyTests.csproj.CoreCompileInputs.cache
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/obj/Debug/netcoreapp2.1/Chip8WorkingCopyTests.AssemblyInfoInputs.cache
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/obj/Debug/netcoreapp2.1/Chip8WorkingCopyTests.AssemblyInfo.cs
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/obj/Debug/netcoreapp2.1/Chip8WorkingCopyTests.csproj.CopyComplete
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/obj/Debug/netcoreapp2.1/Chip8WorkingCopyTests.dll
+/Users/garymoore/RiderProjects/Chip8WorkingCopy/Chip8WorkingCopyTests/obj/Debug/netcoreapp2.1/Chip8WorkingCopyTests.pdb
