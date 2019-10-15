@@ -1,5 +1,5 @@
 ﻿// This class will read a programs hex and print out formatted 8080 assembly
-// langauge.
+// language.
 
 
 using System;
@@ -9,9 +9,17 @@ using System.Linq;
 
 namespace Chip8WorkingCopy
 {
+    /// <summary>
+    /// Class containing functions capable of disassembling 8080 32bit microcode. Can disassemble a single line,
+    /// or multiple into
+    /// </summary>
     public class Disassembler
     {
-        
+        /// <summary>
+        /// Disassemble raw bytes to a list of 8080 assembler strings.
+        /// </summary>
+        /// <param name="fileToRead">Path to file</param>
+        /// <returns>List of 8080 disassembler strings</returns>
         public List<string> Disassemble8080ToList(string fileToRead)
         {     
             
