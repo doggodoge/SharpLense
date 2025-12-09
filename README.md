@@ -1,4 +1,6 @@
-# SharpLense 🔍
+Archived on GitHub and moved to https://git.sr.ht/~gary_moore/SharpLense
+
+    # SharpLense 🔍
 This is a very utilitarian tool I made to take a closer look at GameBoy ROMs. It just presents all the opcodes of GameBoy machine code into more intelligible ASM-like stuff.
 
 ## Plans
